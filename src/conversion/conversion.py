@@ -33,7 +33,7 @@ class Conversion:
             fahrenheit_a_celsius(32) -> 0.0
             fahrenheit_a_celsius(212) -> 100.0
         """
-        pass
+        return (fahrenheit-32)*5/9
     
     def metros_a_pies(self, metros):
         """
@@ -50,7 +50,7 @@ class Conversion:
         Ejemplo:
             metros_a_pies(1) -> 3.28084
         """
-        pass
+        return metros*3.28084
     
     def pies_a_metros(self, pies):
         """
@@ -67,7 +67,7 @@ class Conversion:
         Ejemplo:
             pies_a_metros(3.28084) -> 1.0
         """
-        pass
+        return pies*0.3048
     
     def decimal_a_binario(self, decimal):
         """
@@ -83,7 +83,15 @@ class Conversion:
             decimal_a_binario(10) -> "1010"
             decimal_a_binario(255) -> "11111111"
         """
-        pass
+        binario = ""
+        
+        if decimal == 0: 
+            return "0"
+        
+        while decimal > 0:
+            binario = str(decimal % 2) + binario
+            decimal //= 2
+        return binario
     
     def binario_a_decimal(self, binario):
         """
@@ -99,7 +107,12 @@ class Conversion:
             binario_a_decimal("1010") -> 10
             binario_a_decimal("11111111") -> 255
         """
-        pass
+        decimal = 0
+        potencia = 0
+        for i in binario[::-1]:
+            decimal += int(i) * (2 ** potencia)
+            potencia += 1
+        return decimal
     
     def decimal_a_romano(self, numero):
         """
@@ -115,7 +128,27 @@ class Conversion:
             decimal_a_romano(9) -> "IX"
             decimal_a_romano(1994) -> "MCMXCIV"
         """
-        pass
+        valores = {
+            1000: "M",
+            900: "CM",
+            500: "D",
+            400: "CD",
+            100: "C",
+            90: "XC",
+            50: "L",
+            40: "XL",
+            10: "X",
+            9: "IX",
+            5: "V",
+            4:"IV",
+            1: "I"
+        }
+        resultado = ""
+        for valor, simbolo in valores.items():
+            while numero >= valor:
+                resultado += simbolo
+                numero-=valor
+        return resultado
     
     def romano_a_decimal(self, romano):
         """
@@ -131,7 +164,27 @@ class Conversion:
             romano_a_decimal("IX") -> 9
             romano_a_decimal("MCMXCIV") -> 1994
         """
-        pass
+        valores = {
+            "I":1,
+            "V":5,
+            "X":10,
+            "L":50,
+            "C":100,
+            "D":500,
+            "M":1000
+        }
+
+        total = 0
+        prev = 0
+
+        for i in romano[::-1]:
+            valor = valores[i]
+            if valor < prev:
+                total-=valor
+            else:
+                total+=valor
+            prev=valor
+        return total
     
     def texto_a_morse(self, texto):
         """
@@ -147,7 +200,34 @@ class Conversion:
             texto_a_morse("SOS") -> "... --- ..."
             texto_a_morse("HELLO") -> ".... . .-.. .-.. ---"
         """
-        pass
+        morse = {
+            'A': '.-',   'B': '-...', 'C': '-.-.', 'D': '-..',
+            'E': '.',    'F': '..-.', 'G': '--.',  'H': '....',
+            'I': '..',   'J': '.---', 'K': '-.-',  'L': '.-..',
+            'M': '--',   'N': '-.',   'O': '---',  'P': '.--.',
+            'Q': '--.-', 'R': '.-.',  'S': '...',  'T': '-',
+            'U': '..-',  'V': '...-', 'W': '.--',  'X': '-..-',
+            'Y': '-.--', 'Z': '--..',
+            '0': '-----','1': '.----','2': '..---','3': '...--',
+            '4': '....-','5': '.....','6': '-....','7': '--...',
+            '8': '---..','9': '----.',
+            ' ': '/' 
+        }
+        texto = texto.upper()
+        resultado = ""
+        primero = True
+        for i in texto:
+            if i in morse:
+                if not primero:
+                    resultado += " "
+                resultado+=morse[i]
+                primero=False
+            else:
+                if not primero:
+                    resultado+=" "
+                resultado+= " error "
+                primero=False
+        return resultado
     
     def morse_a_texto(self, morse):
         """
@@ -163,4 +243,37 @@ class Conversion:
             morse_a_texto("... --- ...") -> "SOS"
             morse_a_texto(".... . .-.. .-.. ---") -> "HELLO"
         """
-        pass
+        morse_diccionario = {
+            ".-": "A", "-...": "B", "-.-.": "C", "-..": "D",
+            ".": "E", "..-.": "F", "--.": "G", "....": "H",
+            "..": "I", ".---": "J", "-.-": "K", ".-..": "L",
+            "--": "M", "-.": "N", "---": "O", ".--.": "P",
+            "--.-": "Q", ".-.": "R", "...": "S", "-": "T",
+            "..-": "U", "...-": "V", ".--": "W", "-..-": "X",
+            "-.--": "Y", "--..": "Z",
+            ".----": "1", "..---": "2", "...--": "3", "....-": "4", ".....": "5",
+            "-....": "6", "--...": "7", "---..": "8", "----.": "9", "-----": "0"
+        }
+        
+        morse = morse.strip()
+        morse = morse.replace("/", " / ")
+        morse = morse.replace("   ", " / ")
+
+        palabras = []
+        for p in morse.split(" / "):
+            if p != "":
+                palabras.append(p)
+
+        texto_final = ""
+
+        for palabra in palabras:
+            letras = palabra.split()
+            for codigo in letras:
+                if codigo in morse_diccionario:
+                    texto_final += morse_diccionario[codigo]
+                else:
+                    pass
+            texto_final += " "
+
+
+        return texto_final.strip()

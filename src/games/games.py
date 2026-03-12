@@ -1,3 +1,4 @@
+import random
 class Games:
     def piedra_papel_tijera(self, jugador1, jugador2):
         """
@@ -15,7 +16,15 @@ class Games:
             - Tijera vence a papel
             - Papel vence a piedra
         """
-        pass
+        if jugador1 == jugador2:
+            return "empate"
+        
+        reglas = {"piedra": "tijera", "tijera": "papel", "papel": "piedra"}
+        
+        if reglas[jugador1] == jugador2:
+            return "jugador1"
+        else:
+            return "jugador2"
     
     def adivinar_numero_pista(self, numero_secreto, intento):
         """
@@ -28,7 +37,12 @@ class Games:
         Returns:
             str: "correcto", "muy alto" o "muy bajo"
         """
-        pass
+        if intento == numero_secreto:
+            return "correcto"
+        elif intento > numero_secreto:
+            return "muy alto"
+        else:
+            return "muy bajo"
     
     def ta_te_ti_ganador(self, tablero):
         """
@@ -45,7 +59,22 @@ class Games:
              ["O", "O", " "],
              [" ", " ", " "]] -> "X"
         """
-        pass
+        lineas = []
+        lineas.extend(tablero)
+        for c in range(3):
+            lineas.append([tablero[0][c], tablero[1][c], tablero[2][c]])
+        lineas.append([tablero[0][0], tablero[1][1], tablero[2][2]])
+        lineas.append([tablero[0][2], tablero[1][1], tablero[2][0]])
+
+        for linea in lineas:
+            if linea[0] == linea[1] == linea[2] and linea[0] != " ":
+                return linea[0]
+
+        for fila in tablero:
+            if " " in fila:
+                return "continua"
+        
+        return "empate"
     
     def generar_combinacion_mastermind(self, longitud, colores_disponibles):
         """
@@ -62,7 +91,7 @@ class Games:
             generar_combinacion_mastermind(4, ["rojo", "azul", "verde"]) 
             -> ["rojo", "azul", "rojo", "verde"]
         """
-        pass
+        return [random.choice(colores_disponibles) for _ in range(longitud)]
     
     def validar_movimiento_torre_ajedrez(self, desde_fila, desde_col, hasta_fila, hasta_col, tablero):
         """
@@ -82,4 +111,16 @@ class Games:
             - La torre se mueve horizontal o verticalmente
             - No puede saltar sobre otras piezas
         """
-        pass
+        if (d_f != h_f and d_c != h_c) or (d_f == h_f and d_c == h_c):
+            return False
+
+        step_f = 0 if d_f == h_f else (1 if h_f > d_f else -1)
+        step_c = 0 if d_c == h_c else (1 if h_c > d_c else -1)
+
+        curr_f, curr_c = d_f + step_f, d_c + step_c
+        while (curr_f, curr_c) != (h_f, h_c):
+            if tablero[curr_f][curr_c] is not None:
+                return False
+            curr_f += step_f
+            curr_c += step_c
+        return True

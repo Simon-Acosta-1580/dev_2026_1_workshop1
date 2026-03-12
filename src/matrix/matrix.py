@@ -44,3 +44,10 @@ class Matrix:
         return sum(matriz[i][i] for i in range(len(matriz)))
 
     def determinante_2x2(self, matriz):
+        a = matriz[0][0]
+        b = matriz[0][1]
+        c = matriz[1][0]
+        d = matriz[1][1]
+        
+        resultado = (a * d) - (b * c)
+        return resultado

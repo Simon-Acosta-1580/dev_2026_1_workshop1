@@ -5,149 +5,89 @@ class Strings:
     """
     
     def es_palindromo(self, texto):
-        """
-        Verifica si una cadena es un palíndromo (se lee igual de izquierda a derecha y viceversa).
-        
-        Args:
-            texto (str): Cadena a verificar
-            
-        Returns:
-            bool: True si es palíndromo, False en caso contrario
-        """
-        pass
+        procesado = "".join(texto.lower().split())
+        return procesado == self.invertir_cadena(procesado)
     
     def invertir_cadena(self, texto):
-        """
-        Invierte una cadena de texto sin usar slicing ni reversed().
-        
-        Args:
-            texto (str): Cadena a invertir
-            
-        Returns:
-            str: Cadena invertida
-        """
-        pass
+        invertida = ""
+        for caracter in texto:
+            invertida = caracter + invertida
+        return invertida
     
     def contar_vocales(self, texto):
-        """
-        Cuenta el número de vocales en una cadena.
-        
-        Args:
-            texto (str): Cadena para contar vocales
-            
-        Returns:
-            int: Número de vocales en la cadena
-        """
-        pass
+        vocales = "aeiouáéíóúAEIOUÁÉÍÓÚ"
+        contador = 0
+        for caracter in texto:
+            if caracter in vocales:
+                contador += 1
+        return contador
     
     def contar_consonantes(self, texto):
-        """
-        Cuenta el número de consonantes en una cadena.
-        
-        Args:
-            texto (str): Cadena para contar consonantes
-            
-        Returns:
-            int: Número de consonantes en la cadena
-        """
-        pass
+        vocales = "aeiouáéíóúAEIOUÁÉÍÓÚ"
+        contador = 0
+        for caracter in texto:
+            if caracter.isalpha() and caracter not in vocales:
+                contador += 1
+        return contador
     
     def es_anagrama(self, texto1, texto2):
-        """
-        Verifica si dos cadenas son anagramas (contienen exactamente los mismos caracteres).
-        
-        Args:
-            texto1 (str): Primera cadena
-            texto2 (str): Segunda cadena
-            
-        Returns:
-            bool: True si son anagramas, False en caso contrario
-        """
-        pass
+        t1 = sorted("".join(texto1.lower().split()))
+        t2 = sorted("".join(texto2.lower().split()))
+        return t1 == t2
     
     def contar_palabras(self, texto):
-        """
-        Cuenta el número de palabras en una cadena.
-        
-        Args:
-            texto (str): Cadena para contar palabras
-            
-        Returns:
-            int: Número de palabras en la cadena
-        """
-        pass
+        return len(texto.split())
     
     def palabras_mayus(self, texto):
-        """
-        Pon en Mayuscula la primera letra de cada palabra en una cadena.
-        
-        Args:
-            texto (str): Cadena
-            
-        Returns:
-            str: Cadena con la primera letra de cada palabra en mayúscula
-        """
-        pass
+        palabras = texto.split()
+        resultado = [p.capitalize() for p in palabras]
+        return " ".join(resultado)
     
     def eliminar_espacios_duplicados(self, texto):
-        """
-        Elimina espacios duplicados en una cadena.
-        
-        Args:
-            texto (str): Cadena con posibles espacios duplicados
-            
-        Returns:
-            str: Cadena sin espacios duplicados
-        """
-        pass
+        return " ".join(texto.split())
     
     def es_numero_entero(self, texto):
-        """
-        Verifica si una cadena representa un número entero sin usar isdigit().
+        if not texto:
+            return False
         
-        Args:
-            texto (str): Cadena a verificar
+        inicio = 0
+        if texto[0] in ('-', '+'):
+            if len(texto) == 1: return False
+            inicio = 1
             
-        Returns:
-            bool: True si la cadena representa un número entero, False en caso contrario
-        """
-        pass
+        numeros = "0123456789"
+        for i in range(inicio, len(texto)):
+            if texto[i] not in numeros:
+                return False
+        return True
     
     def cifrar_cesar(self, texto, desplazamiento):
-        """
-        Aplica el cifrado César a una cadena de texto.
-        
-        Args:
-            texto (str): Cadena a cifrar
-            desplazamiento (int): Número de posiciones a desplazar cada letra
-            
-        Returns:
-            str: Cadena cifrada
-        """
-        pass
+        resultado = ""
+        for char in texto:
+            if char.isalpha():
+                # Determinamos si es mayúscula o minúscula para mantener el caso
+                base = ord('A') if char.isupper() else ord('a')
+                # Fórmula César: (x + n) % 26
+                nuevo_char = chr((ord(char) - base + desplazamiento) % 26 + base)
+                resultado += nuevo_char
+            else:
+                resultado += char
+        return resultado
     
     def descifrar_cesar(self, texto, desplazamiento):
-        """
-        Descifra una cadena cifrada con el método César.
-        
-        Args:
-            texto (str): Cadena cifrada
-            desplazamiento (int): Número de posiciones que se desplazó cada letra
-            
-        Returns:
-            str: Cadena descifrada
-        """
-        pass
+        return self.cifrar_cesar(texto, -desplazamiento)
     
     def encontrar_subcadena(self, texto, subcadena):
-        """
-        Encuentra todas las posiciones de una subcadena en un texto sin usar find() o index().
-        
-        Args:
-            texto (str): Cadena principal
-            subcadena (str): Subcadena a buscar
-            
-        Returns:
-            list: Lista con las posiciones iniciales de cada ocurrencia
-        """
-        pass
+        posiciones = []
+        n, m = len(texto), len(subcadena)
+        if m == 0: return posiciones
+
+        for i in range(n - m + 1):
+            coincide = True
+            for j in range(m):
+                if texto[i + j] != subcadena[j]:
+                    coincide = False
+                    break
+            if coincide:
+                posiciones.append(i)
+        return posiciones

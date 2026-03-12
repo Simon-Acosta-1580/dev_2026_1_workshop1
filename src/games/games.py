@@ -16,15 +16,16 @@ class Games:
             - Tijera vence a papel
             - Papel vence a piedra
         """
-        if jugador1 == jugador2:
+        j1 = jugador1.lower()
+        j2 = jugador2.lower()
+        
+        if j1 == j2:
             return "empate"
         
         reglas = {"piedra": "tijera", "tijera": "papel", "papel": "piedra"}
-        
-        if reglas[jugador1] == jugador2:
+        if reglas[j1] == j2:
             return "jugador1"
-        else:
-            return "jugador2"
+        return "jugador2"
     
     def adivinar_numero_pista(self, numero_secreto, intento):
         """
@@ -111,16 +112,6 @@ class Games:
             - La torre se mueve horizontal o verticalmente
             - No puede saltar sobre otras piezas
         """
-        if (d_f != h_f and d_c != h_c) or (d_f == h_f and d_c == h_c):
+        if (desde_fila != hasta_fila and desde_col != hasta_col) or (desde_fila == hasta_fila and desde_col == hasta_col):
             return False
-
-        step_f = 0 if d_f == h_f else (1 if h_f > d_f else -1)
-        step_c = 0 if d_c == h_c else (1 if h_c > d_c else -1)
-
-        curr_f, curr_c = d_f + step_f, d_c + step_c
-        while (curr_f, curr_c) != (h_f, h_c):
-            if tablero[curr_f][curr_c] is not None:
-                return False
-            curr_f += step_f
-            curr_c += step_c
         return True

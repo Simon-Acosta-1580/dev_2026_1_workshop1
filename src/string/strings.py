@@ -1,3 +1,4 @@
+import re
 class Strings:
     """
     Clase con métodos para manipulación y operaciones con cadenas de texto.
@@ -23,12 +24,8 @@ class Strings:
         return contador
     
     def contar_consonantes(self, texto):
-        vocales = "aeiouáéíóúAEIOUÁÉÍÓÚ"
-        contador = 0
-        for caracter in texto:
-            if caracter.isalpha() and caracter not in vocales:
-                contador += 1
-        return contador
+        consonantes = "bcdfghjklmnpqrstvwxyz"
+        return sum(1 for letra in texto.lower() if letra in consonantes)
     
     def es_anagrama(self, texto1, texto2):
         t1 = sorted("".join(texto1.lower().split()))
@@ -39,9 +36,7 @@ class Strings:
         return len(texto.split())
     
     def palabras_mayus(self, texto):
-        palabras = texto.split()
-        resultado = [p.capitalize() for p in palabras]
-        return " ".join(resultado)
+        return re.sub(r'\w+', lambda m: m.group(0).capitalize(), texto)
     
     def eliminar_espacios_duplicados(self, texto):
         return " ".join(texto.split())

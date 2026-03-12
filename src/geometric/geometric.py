@@ -16,7 +16,8 @@ class Geometria:
         Returns:
             float: Área del rectángulo
         """
-        return base*altura
+        if base < 0 or altura < 0: return 0 
+        return base * altura
     
     def perimetro_rectangulo(self, base, altura):
         """
@@ -41,6 +42,7 @@ class Geometria:
         Returns:
             float: Área del círculo
         """
+        if radio < 0: return 0
         return math.pi * (radio ** 2)
     
     def perimetro_circulo(self, radio):
@@ -190,6 +192,7 @@ class Geometria:
         Returns:
             float: Volumen del cubo
         """
+        if lado < 0: return 0
         return lado ** 3
     
     def area_superficie_cubo(self, lado):
@@ -300,9 +303,9 @@ class Geometria:
             float: Pendiente de la recta
         """
         if x1 == x2:
-            return float('inf') 
+            raise ZeroDivisionError("Pendiente infinita")
         return (y2 - y1) / (x2 - x1)
-    
+        
     def ecuacion_recta(self, x1, y1, x2, y2):
         """
         Obtiene los coeficientes de la ecuación de una recta en la forma Ax + By + C = 0.
